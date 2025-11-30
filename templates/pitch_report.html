@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-10">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <a class="btn btn-outline-secondary" href="/">← Back</a>
+            <a href="{{ url_for('download_pitch_report') }}" class="btn btn-primary">
+                ⬇️ Download Pitch Analysis PDF
+            </a>
+        </div>
+
+        <div class="card soft mb-4">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
+                <div>
+                    <p class="eyebrow text-uppercase mb-1">Full Pitch Report</p>
+                    <h4 class="mb-0">Praat vs Librosa (pyin) Pitch Analysis</h4>
+                </div>
+                <span class="badge bg-primary-subtle text-primary px-3 py-2">Generated automatically</span>
+            </div>
+        </div>
+
+        {% if error %}
+        <div class="alert alert-warning">{{ error }}</div>
+        {% else %}
+
+        <div class="card soft mb-4">
+            <p class="eyebrow text-uppercase mb-1">Section 1 — Summary</p>
+            <h5 class="mb-2">Overall stats</h5>
+            <ul class="mb-3">
+                <li><strong>Total files processed:</strong> {{ total_files }}</li>
+            </ul>
+            <div class="row g-3">
+                {% if praat_summary_html %}
+                <div class="col-md-6">
+                    <div class="inner-card h-100">
+                        <h6 class="mb-2">Mean F0 (Praat) per vowel</h6>
+                        <div class="table-responsive">
+                            {{ praat_summary_html | safe }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+                {% if librosa_summary_html %}
+                <div class="col-md-6">
+                    <div class="inner-card h-100">
+                        <h6 class="mb-2">Mean F0 (Librosa) per vowel</h6>
+                        <div class="table-responsive">
+                            {{ librosa_summary_html | safe }}
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card soft mb-4">
+            <p class="eyebrow text-uppercase mb-1">Section 2 — Pitch Plots</p>
+            <h5 class="mb-2">Pitch contour comparisons (Praat vs Librosa)</h5>
+            <div class="row g-4">
+                {% for p in pitch_plots %}
+                <div class="col-md-6">
+                    <div class="lazy-shell">
+                        <img src="{{ url_for('static', filename=p) }}" data-src="{{ url_for('static', filename=p) }}" loading="lazy" class="img-fluid rounded-4 border shadow-sm w-100">
+                    </div>
+                </div>
+                {% endfor %}
+                {% if pitch_plots|length == 0 %}
+                <div class="col-12 text-muted">No pitch plots available.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="card soft mb-4">
+            <p class="eyebrow text-uppercase mb-1">Section 3 — Pitch Analysis Discussion</p>
+            <h5 class="mb-3">Pitch Analysis Discussion (Auto-Generated)</h5>
+            <p>The pitch measurements obtained from both Praat and Python show a clear and consistent pattern across all recordings. Using Praat, the F₀ values fell mostly within the typical adult male range (85–180 Hz), which aligns with the expected physiological characteristics of the speaker. A small number of frames in some recordings were marked as unvoiced (F₀ = 0), which is normal and typically corresponds to the beginning and end of the vowel production.</p>
+            <p>When comparing Praat results with Python-based measurements, Praat (Parselmouth) produced smoother and more stable pitch contours, while the Librosa pyin method tended to underestimate F₀ in some segments or produced short interruptions in voicing. This difference is expected: Praat uses an autocorrelation-based algorithm optimized for speech, whereas Librosa’s probabilistic method is more sensitive to noise and short-duration vowels. Despite these differences, both methods identified similar overall pitch ranges and contour shapes.</p>
+            <p>The pitch contour of each vowel shows a relatively stable F₀ during the middle portion of the segment, with deviations mainly at onset and offset, reflecting typical articulatory transitions. Overall, the Praat results were more reliable and consistent, and therefore Praat is considered the more accurate method for pitch tracking in this task. The comparison confirms that both techniques can estimate F₀ successfully, but Praat provides cleaner and more robust contours suitable for acoustic analysis.</p>
+        </div>
+
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,10 @@
+Flask
+Jinja2
+numpy
+pandas
+matplotlib
+praat-parselmouth
+librosa
+soundfile
+scipy
+reportlab

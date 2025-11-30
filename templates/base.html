@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vowel Analyzer</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card: #ffffff;
+            --text: #0f172a;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --primary: #2563eb;
+            --accent: #0ea5e9;
+        }
+
+        body {
+            background: radial-gradient(1200px circle at 10% 10%, #e0ecff, transparent 45%), radial-gradient(1000px circle at 90% 0%, #e0f7ff, transparent 40%), var(--bg);
+            font-family: "Manrope", sans-serif;
+            color: var(--text);
+        }
+
+        .navbar {
+            background-color: var(--card);
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 12px 30px rgba(15, 23, 42, 0.04);
+        }
+
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 40px rgba(15, 23, 42, 0.06);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border: none;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(90deg, var(--primary), #1e40af);
+        }
+
+        .btn-dark {
+            background-color: #0f172a;
+            border: none;
+        }
+
+        .navbar-brand {
+            color: var(--text) !important;
+            font-weight: 700;
+        }
+
+        table {
+            color: var(--text) !important;
+        }
+
+        .page-header {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .eyebrow {
+            letter-spacing: 0.08em;
+            font-size: 0.78rem;
+            color: var(--muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .page-title {
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        @media (min-width: 992px) {
+            .page-header {
+                flex-direction: row;
+                align-items: center;
+            }
+        }
+
+        .soft {
+            border-radius: 20px;
+        }
+
+        .spectro-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 16px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .spectro-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        .text-muted {
+            color: var(--muted) !important;
+        }
+
+        .audio-compact {
+            height: 32px;
+            width: 220px;
+            min-width: 180px;
+        }
+
+        .lazy-shell {
+            position: relative;
+            background: linear-gradient(120deg, #e2e8f0, #f8fafc, #e2e8f0);
+            background-size: 200% 200%;
+            animation: shimmer 1.8s ease infinite;
+            border-radius: 14px;
+            min-height: 220px;
+        }
+
+        .lazy-shell img {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .lazy-shell.loaded {
+            animation: none;
+            background: transparent;
+        }
+
+        .lazy-shell.loaded img {
+            opacity: 1;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .inner-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            height: 100%;
+        }
+
+        /* Full-screen loader shown while analysis runs */
+        .loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.35);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        .loading-overlay.active {
+            display: flex;
+        }
+        .loading-card {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 26px 30px;
+            border-radius: 18px;
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+            min-width: 280px;
+            text-align: center;
+        }
+        .spinner {
+            width: 54px;
+            height: 54px;
+            border: 4px solid rgba(255, 255, 255, 0.2);
+            border-top-color: #38bdf8;
+            border-radius: 50%;
+            margin: 0 auto 14px;
+            animation: spin 0.9s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-light mb-4">
+    <div class="container">
+        <span class="navbar-brand h3">🎙️ Vowel Analyzer — Acoustic + Spectral Analysis</span>
+    </div>
+</nav>
+
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- Global loading overlay -->
+<div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+    <div class="loading-card">
+        <div class="spinner" role="status" aria-label="Loading"></div>
+        <div class="fw-semibold">Running analysis…</div>
+        <div class="small text-muted mt-1">Hang tight while we process your audio</div>
+    </div>
+</div>
+
+<script>
+    // Expose a helper to toggle the loader.
+    (function () {
+        const overlay = document.getElementById("loading-overlay");
+        window.showLoader = function () {
+            if (overlay) overlay.classList.add("active");
+        };
+        window.hideLoader = function () {
+            if (overlay) overlay.classList.remove("active");
+        };
+    })();
+
+    // Lazy-load any image with data-src across all pages.
+    (function () {
+        const images = document.querySelectorAll('img[data-src]');
+        if (!images.length) return;
+        const load = (img) => {
+            img.src = img.dataset.src;
+            img.addEventListener("load", () => {
+                const shell = img.closest(".lazy-shell");
+                if (shell) shell.classList.add("loaded");
+            }, { once: true });
+        };
+        if (!("IntersectionObserver" in window)) {
+            images.forEach(load);
+            return;
+        }
+        const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    load(entry.target);
+                    obs.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: "120px" });
+        images.forEach(img => io.observe(img));
+    })();
+</script>
+</body>
+</html>

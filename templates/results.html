@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="page-header">
+    <div>
+        <p class="eyebrow">Analysis Complete</p>
+        <h2 class="page-title">Acoustic Dashboard</h2>
+        <p class="text-muted mb-0">Review measurements, download the dataset, and browse spectrograms for every recording.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="/download" class="btn btn-dark">⬇️ Download CSV</a>
+        <a href="{{ url_for('pitch_report') }}" class="btn btn-primary">📈 Generate Full Pitch Report</a>
+        <a href="/" class="btn btn-outline-secondary">Start New Run</a>
+    </div>
+</div>
+
+<div class="card soft mb-4" id="vowel-plot">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div>
+            <p class="eyebrow text-uppercase mb-1">Vowel Space</p>
+            <h5 class="mb-0">Formant distribution across your dataset</h5>
+        </div>
+        <span class="badge bg-success-subtle text-success px-3 py-2">Auto-generated</span>
+    </div>
+    <img src="/{{ plot_path }}" class="img-fluid rounded-4 shadow-sm mt-3 border">
+</div>
+
+<div class="card soft mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div>
+            <p class="eyebrow text-uppercase mb-1">Summary Statistics</p>
+            <h5 class="mb-0">Mean / Std for F1, F2, Duration by vowel</h5>
+        </div>
+    </div>
+    <div class="table-responsive mt-3">
+        {{ summary | safe }}
+    </div>
+</div>
+
+{% if praat_pitch_summary or librosa_pitch_summary %}
+<div class="card soft mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div>
+            <p class="eyebrow text-uppercase mb-1">Pitch Summary</p>
+            <h5 class="mb-0">Praat vs Librosa — mean/min/max/std per vowel</h5>
+        </div>
+    </div>
+    <div class="row g-3 mt-2">
+        {% if praat_pitch_summary %}
+        <div class="col-md-6">
+            <div class="inner-card h-100">
+                <h6 class="mb-2">Praat (parselmouth)</h6>
+                <div class="table-responsive">
+                    {{ praat_pitch_summary | safe }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% if librosa_pitch_summary %}
+        <div class="col-md-6">
+            <div class="inner-card h-100">
+                <h6 class="mb-2">Librosa (pyin)</h6>
+                <div class="table-responsive">
+                    {{ librosa_pitch_summary | safe }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<div class="card soft mb-4">
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="inner-card">
+                <p class="eyebrow text-uppercase mb-1">Formant Spread</p>
+                <h6 class="mb-2">F1 / F2 distributions per vowel</h6>
+                <img src="/{{ plot_box_path }}" class="img-fluid rounded-4 border shadow-sm">
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="inner-card">
+                <p class="eyebrow text-uppercase mb-1">Durations</p>
+                <h6 class="mb-2">Histogram of recording lengths</h6>
+                <img src="/{{ duration_hist_path }}" class="img-fluid rounded-4 border shadow-sm">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card soft mb-4">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div>
+            <p class="eyebrow text-uppercase mb-1">Measurements</p>
+            <h5 class="mb-0">F1 / F2 values and durations</h5>
+        </div>
+    </div>
+    <div class="table-responsive mt-3">
+        {{ tables | safe }}
+    </div>
+</div>
+
+<div class="card soft">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3 mb-3">
+        <div>
+            <p class="eyebrow text-uppercase mb-1">Spectrogram Viewer</p>
+            <h5 class="mb-0">Waveform, pitch, and formants for every recording</h5>
+        </div>
+        <span class="badge bg-primary-subtle text-primary px-3 py-2">Generated automatically</span>
+    </div>
+
+    <div class="row g-4">
+        {% for f in files %}
+        <div class="col-md-6">
+            <div class="spectro-card h-100">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div>
+                        <span class="badge bg-primary-subtle text-primary me-2">{{ f['Vowel'] }}</span>
+                        <strong>{{ f['File'] }}</strong>
+                        <div class="text-muted small">Duration: {{ "%.2f"|format(f['Duration']) if f['Duration'] else "n/a" }}s</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <audio controls preload="none" class="audio-compact" src="{{ url_for('serve_audio') }}?file={{ f['Path'] | urlencode }}"></audio>
+                    </div>
+                </div>
+                {% if f['SpectrogramPath'] %}
+                <div class="lazy-shell">
+                    <img src="{{ url_for('static', filename=f['SpectrogramPath']) }}"
+                         data-src="{{ url_for('static', filename=f['SpectrogramPath']) }}"
+                         loading="lazy"
+                         class="img-fluid rounded-4 border shadow-sm w-100">
+                </div>
+                {% else %}
+                <div class="alert alert-warning mb-0">Spectrogram unavailable for this file.</div>
+                {% endif %}
+
+                {% if f['PitchPlotPath'] %}
+                <div class="lazy-shell mt-3">
+                    <img src="{{ url_for('static', filename=f['PitchPlotPath']) }}"
+                         data-src="{{ url_for('static', filename=f['PitchPlotPath']) }}"
+                         loading="lazy"
+                         class="img-fluid rounded-4 border shadow-sm w-100">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    // Scroll to vowel plot after a run to show it immediately
+    (function () {
+        const shouldShow = "{{ show_plot|default(False) }}";
+        if (shouldShow === "True" || shouldShow === "true" || shouldShow === "1") {
+            const target = document.getElementById("vowel-plot");
+            if (target) {
+                target.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }
+    })();
+
+    // Lazy load spectrogram images when they enter the viewport
+    (function () {
+        const images = document.querySelectorAll('img[data-src]');
+        if (!("IntersectionObserver" in window)) {
+            images.forEach((img) => { img.src = img.dataset.src; });
+            return;
+        }
+        const io = new IntersectionObserver((entries, obs) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.addEventListener("load", () => {
+                        const shell = img.closest(".lazy-shell");
+                        if (shell) shell.classList.add("loaded");
+                    });
+                    obs.unobserve(img);
+                }
+            });
+        }, { rootMargin: "120px" });
+        images.forEach(img => io.observe(img));
+    })();
+</script>
+
+{% endblock %}

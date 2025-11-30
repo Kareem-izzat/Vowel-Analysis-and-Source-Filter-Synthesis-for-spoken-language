@@ -1,0 +1,98 @@
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
+
+=== Synthesis Route Called ===
+CSV path: static/synth_outputs\comparisons\comparison_summary.csv
+CSV exists: True
+Loaded 5 vowel formants
+Loaded 5 comparison records
+Vowel i plot: synth_outputs/comparisons/comparison_i.png
+Vowel e plot: synth_outputs/comparisons/comparison_e.png
+Vowel a plot: synth_outputs/comparisons/comparison_a.png
+Vowel o plot: synth_outputs/comparisons/comparison_o.png
+Vowel u plot: synth_outputs/comparisons/comparison_u.png
+Summary plot path: synth_outputs/comparisons/vowel_space_all_samples.png
+Comparison table created with 5 rows
+detailed_comparisons=5, summary_plot_path=True
